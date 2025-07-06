@@ -84,7 +84,7 @@ class ArrayListOperations
     //method sort untuk mengurutkan ArrayList
     public void sort(ArrayList<Integer> list) 
     {
-        Collections.sort(list);
+        Collections.sort(list); // mengurutkan ArrayList menggunakan Collections.sort yang merupakan metode statis yang disediakan oleh Javaadding
     }
 }
 
