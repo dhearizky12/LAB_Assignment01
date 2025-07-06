@@ -104,49 +104,80 @@ public class Comparison
         System.out.println("|-----------------------------------------------------|");
         System.out.println("| Traversal                                           |");
         System.out.println("|-----------------------------------------------------|");
-        arrayOps.traverse(array);
-        listOps.traverse(arrayList);
+        showExecutionTime(() -> arrayOps.traverse(array), "Traversal Array");
+        showExecutionTime(() -> listOps.traverse(arrayList), "Traversal ArrayList");
 
         System.out.println("|-----------------------------------------------------|");
         System.out.println("| Search (cari nilai 30)                              |");
         System.out.println("|-----------------------------------------------------|");
-        long start = System.nanoTime();
-        int indexArr = arrayOps.linearSearch(array, 30);
-        long end = System.nanoTime();
-        System.out.println("Pencarian 30 dalam Array: Ditemukan di indeks " + indexArr);
-        System.out.println("Waktu eksekusi pencarian pada Array: " + (end - start) / 1_000_000.0 + " ms");
+        showExecutionTime(() -> {
+            int indexArr = arrayOps.linearSearch(array, 30);
+            System.out.println("Pencarian dengan linear search 30 dalam Array: Ditemukan di indeks " + indexArr);
+        }, "Search di Array");
 
-        start = System.nanoTime();
-        int indexList = listOps.search(arrayList, 30);
-        end = System.nanoTime();
-        System.out.println("Pencarian 30 dalam ArrayList: Ditemukan di indeks " + indexList);
-        System.out.println("Waktu eksekusi pencarian pada ArrayList: " + (end - start) / 1_000_000.0 + " ms");
+        showExecutionTime(() -> {
+            int indexArr = arrayOps.binarySearch(array, 30);
+            System.out.println("Pencarian dengan binary search 30 dalam Array: Ditemukan di indeks " + indexArr);
+        }, "Search di Array");
+
+        showExecutionTime(() -> {
+            int indexList = listOps.search(arrayList, 30);
+            System.out.println("Pencarian 30 dalam ArrayList: Ditemukan di indeks " + indexList);
+        }, "Search di ArrayList");
 
         System.out.println("|-----------------------------------------------------|");
         System.out.println("| Insert nilai 25 di indeks ke-2                      |");
         System.out.println("|-----------------------------------------------------|");
-        int[] arrayInserted = arrayOps.insert(array, 25, 2);
-        arrayOps.traverse(arrayInserted);
-        listOps.insert(arrayList, 25, 2);
-        listOps.traverse(arrayList);
+        // Gunakan array 2 dimensi untuk menyimpan hasil insert
+        final int[][] arrayInserted = new int[1][];
+        showExecutionTime(() -> {
+            arrayInserted[0] = arrayOps.insert(array, 25, 2);
+            arrayOps.traverse(arrayInserted[0]);
+        }, "Insert ke Array");
+
+
+        showExecutionTime(() -> {
+            listOps.insert(arrayList, 25, 2);
+            listOps.traverse(arrayList);
+        }, "Insert ke ArrayList");
 
         System.out.println("|-----------------------------------------------------|");
         System.out.println("| Delete indeks ke-2                                  |");
         System.out.println("|-----------------------------------------------------|");
-        int[] arrayDeleted = arrayOps.delete(arrayInserted, 2);
-        arrayOps.traverse(arrayDeleted);
-        listOps.delete(arrayList, 2);
-        listOps.traverse(arrayList);
+        // // Gunakan array 2 dimensi untuk menyimpan hasil delete
+        final int[][] arrayDeleted = new int[1][];
+        showExecutionTime(() -> {
+            arrayDeleted[0] = arrayOps.delete(arrayInserted[0], 2);
+            arrayOps.traverse(arrayDeleted[0]);
+        }, "Delete dari Array");
+
+        showExecutionTime(() -> {
+            listOps.delete(arrayList, 2);
+            listOps.traverse(arrayList);
+        }, "Delete dari ArrayList");
 
         System.out.println("|-----------------------------------------------------|");
         System.out.println("| Sorting ArrayList                                   |");
         System.out.println("|-----------------------------------------------------|");
-        listOps.sort(arrayList);
-        listOps.traverse(arrayList);
+        showExecutionTime(() -> {
+            listOps.sort(arrayList);
+            listOps.traverse(arrayList);
+        }, "Sorting ArrayList");
 
         System.out.println("|=====================================================|");
         System.out.println("|               TUGAS SELESAI                         |");
         System.out.println("|=====================================================|");
+    }
+
+    //method untuk mengukur waktu eksekusi dari task yang diberikan
+    // menerima Runnable task dan label untuk menampilkan hasil
+    //runnable adalah antarmuka fungsional yang memungkinkan kita untuk menjalankan kode dalam bentuk lambda
+    public static void showExecutionTime(Runnable task, String label) 
+    {
+        long start = System.nanoTime();
+        task.run();
+        long end = System.nanoTime();
+        System.out.printf("Execution Time (%s): %.5f ms%n", label, (end - start) / 1_000_000.0);
     }
 
     public static void opening() 
@@ -171,8 +202,9 @@ public class Comparison
     public static void showHeader() 
     {
         System.out.println("|=====================================================|");
-        System.out.println("| Nama : Dhea Fiky Fatchatur Rizky                    |");
-        System.out.println("| NIM  : 2802621393                                   |");
+        System.out.println("| Nama    : Dhea Fiky Fatchatur Rizky                 |");
+        System.out.println("| NIM     : 2802621393                                |");
+        System.out.println("| Jurusan : Computer Science                          |");
         System.out.println("|=====================================================|");
     }
 }
